@@ -1,8 +1,12 @@
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS += \
+	Controller.o \
 	Walker.o \
 	LineTracer.o \
+	LineTracer_.o \
+	Mileage.o \
+	Runner.o \
 	Scenario.o \
 	ScenarioTracer.o \
 	RandomWalker.o \
@@ -24,3 +28,5 @@ APPL_DIRS += $(mkfile_path)app $(mkfile_path)unit
 INCLUDES += \
 	-I$(mkfile_path)app \
 	-I$(mkfile_path)unit
+
+COPTS += -std=gnu++11

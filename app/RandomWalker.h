@@ -13,6 +13,7 @@
 #include "SimpleTimer.h"
 
 #include "LineTracer.h"
+#include "LineTracer_.h"
 #include "ScenarioTracer.h"
 
 class RandomWalker {

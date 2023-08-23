@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include "Clock.h"
+#include "Controller.h"
 
 #include "RandomWalker.h"
 
@@ -42,7 +43,9 @@ RandomWalker::RandomWalker(LineTracer* lineTracer,
  * ランダム走行する
  */
 void RandomWalker::run() {
-    printf("テスト:%d\n",mState);
+    LineTracer_ lineTracer(1000,20,90,true);
+    Controller controller;
+    printf("mState:%d\n",mState);
     switch (mState) {
     case UNDEFINED:
         execUndefined();
@@ -51,6 +54,13 @@ void RandomWalker::run() {
         execWaitingForStart();
         break;
     case LINE_TRACING:
+        while(true){
+            // controller.setRightPwm(100);
+            // controller.setLeftPwm(100);
+            // controller.sleep();
+            lineTracer.run();
+            printf("-");
+        }
         execLineTracing();
         break;
     case SCENARIO_TRACING:

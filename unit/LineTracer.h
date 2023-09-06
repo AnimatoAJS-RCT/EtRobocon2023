@@ -4,7 +4,7 @@
 #include "Runner.h"
 #include "Mileage.h"
 
-class LineTracer_ : public Runner {
+class LineTracer : public Runner {
  public:
   /**
    * コンストラクタ
@@ -13,7 +13,7 @@ class LineTracer_ : public Runner {
    * @param _pwm PWM値 -100~100
    * @param _isLeftEdge エッジの左右判定(true:左エッジ, false:右エッジ)
    */
-  LineTracer_(double _targetDistance, int _targetBrightness, int _pwm, bool _isLeftEdge);
+  LineTracer(double _targetDistance, int _targetBrightness, int _pwm, bool _isLeftEdge);
 
   /**
    * @brief ライントレースする

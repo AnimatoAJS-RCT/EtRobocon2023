@@ -1,19 +1,19 @@
 /******************************************************************************
- *  LineTracer.cpp (for LEGO Mindstorms EV3)
+ *  LineTracer_.cpp (for LEGO Mindstorms EV3)
  *  Created on: 2015/01/26
- *  Implementation of the Class LineTracer
+ *  Implementation of the Class LineTracer_
  *  Author: Kazuhiro Kawachi
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
-#include "LineTracer.h"
+#include "LineTracer_.h"
 
 /**
  * コンストラクタ
  * @param lineMonitor     ライン判定
  * @param walker 走行
  */
-LineTracer::LineTracer(const LineMonitor* lineMonitor,
+LineTracer_::LineTracer_(const LineMonitor* lineMonitor,
                        Walker* walker)
     : mLineMonitor(lineMonitor),
       mWalker(walker),
@@ -23,7 +23,7 @@ LineTracer::LineTracer(const LineMonitor* lineMonitor,
 /**
  * ライントレースする
  */
-void LineTracer::run() {
+void LineTracer_::run() {
     if (mIsInitialized == false) {
         mWalker->init();
         mIsInitialized = true;
@@ -46,7 +46,7 @@ void LineTracer::run() {
  * @retval RIGHT  ライン上にある場合(右旋回指示)
  * @retval LEFT ライン外にある場合(左旋回指示)
  */
-int LineTracer::calcDirection(bool isOnLine) {
+int LineTracer_::calcDirection(bool isOnLine) {
     if (isOnLine) {
         // ライン上にある場合
         return Walker::RIGHT;

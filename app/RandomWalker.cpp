@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 #include "Clock.h"
-#include "Controller.h"
 
 #include "RandomWalker.h"
 
@@ -18,18 +17,13 @@ const int RandomWalker::MAX_TIME = 15000 * 1000;   // 切り替え時間の最�
 
 /**
  * コンストラクタ
- * @param lineTracer      ライントレーサ
  * @param scenarioTracer  シナリオトレーサ
  * @param starter         スタータ  
  * @param simpleTimer     タイマ
  */
-RandomWalker::RandomWalker(LineTracer* lineTracer,
-                           ScenarioTracer* scenarioTracer,
-                           const Starter* starter,
+RandomWalker::RandomWalker(const Starter* starter,
                            SimpleTimer* simpleTimer)
-    : mLineTracer(lineTracer),
-      mScenarioTracer(scenarioTracer),
-      mStarter(starter),
+    : mStarter(starter),
       mSimpleTimer(simpleTimer),
       mState(UNDEFINED) {
     ev3api::Clock* clock = new ev3api::Clock();
@@ -43,9 +37,6 @@ RandomWalker::RandomWalker(LineTracer* lineTracer,
  * ランダム走行する
  */
 void RandomWalker::run() {
-    LineTracer_ lineTracer(1000,20,90,true);
-    Controller controller;
-    printf("mState:%d\n",mState);
     switch (mState) {
     case UNDEFINED:
         execUndefined();
@@ -54,17 +45,10 @@ void RandomWalker::run() {
         execWaitingForStart();
         break;
     case LINE_TRACING:
-        while(true){
-            // controller.setRightPwm(100);
-            // controller.setLeftPwm(100);
-            // controller.sleep();
-            lineTracer.run();
-            printf("-");
-        }
-        execLineTracing();
+        execCourseRunning();
         break;
     case SCENARIO_TRACING:
-        execScenarioTracing();
+        execDifficultRunning();
         break;
     default:
         break;
@@ -108,31 +92,28 @@ void RandomWalker::execWaitingForStart() {
 }
 
 /**
- * ライントレース状態の処理
+ * ノーマルコースの走行状態の処理
  */
-void RandomWalker::execLineTracing() {
-    mLineTracer->run();
-
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
-
-        mState = SCENARIO_TRACING;
-
-        modeChangeAction();
-    }
+void RandomWalker::execCourseRunning() {
+    LineTracer lineTracer(500,20,90,true);
+    ScenarioTracer scenarioTracer(500,50,90);
+    lineTracer.run();
+    printf("lineTracer.run()：完了\n");
+    scenarioTracer.run();
+    printf("scenarioTracer.run()：完了\n");
 }
 
 /**
- * シナリオトレース状態の処理
+ * 難所エリア走行状態の処理
  */
-void RandomWalker::execScenarioTracing() {
-    mScenarioTracer->run();
+void RandomWalker::execDifficultRunning() {
+    // mScenarioTracer->run();
 
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
+    // if (mSimpleTimer->isTimedOut()) {
+    //     mSimpleTimer->stop();
 
-        mState = LINE_TRACING;
+    //     mState = LINE_TRACING;
 
-        modeChangeAction();
-    }
+    //     modeChangeAction();
+    // }
 }

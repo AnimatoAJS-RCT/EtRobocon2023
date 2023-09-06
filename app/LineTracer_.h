@@ -1,7 +1,7 @@
 /******************************************************************************
- *  LineTracer.h (for LEGO Mindstorms EV3)
+ *  LineTracer_.h (for LEGO Mindstorms EV3)
  *  Created on: 2015/01/25
- *  Definition of the Class LineTracer
+ *  Definition of the Class LineTracer_
  *  Author: Kazuhiro Kawachi
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
@@ -12,9 +12,9 @@
 #include "LineMonitor.h"
 #include "Walker.h"
 
-class LineTracer {
+class LineTracer_ {
 public:
-    LineTracer(const LineMonitor* lineMonitor,
+    LineTracer_(const LineMonitor* lineMonitor,
                Walker* walker);
 
     void run();

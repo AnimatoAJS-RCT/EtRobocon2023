@@ -13,14 +13,12 @@
 #include "SimpleTimer.h"
 
 #include "LineTracer.h"
-#include "LineTracer_.h"
 #include "ScenarioTracer.h"
+#include "LineMonitor.h"
 
 class RandomWalker {
 public:
-    RandomWalker(LineTracer* lineTracer,
-                 ScenarioTracer* scenarioTracer,
-                 const Starter* starter,
+    RandomWalker(const Starter* starter,
                  SimpleTimer* simpleTimer);
 
     void run();
@@ -36,8 +34,6 @@ private:
     static const int MIN_TIME;
     static const int MAX_TIME;
 
-    LineTracer* mLineTracer;
-    ScenarioTracer* mScenarioTracer;
     const Starter* mStarter;
     SimpleTimer* mSimpleTimer;
     State mState;
@@ -46,8 +42,8 @@ private:
     void modeChangeAction();
     void execUndefined();
     void execWaitingForStart();
-    void execLineTracing();
-    void execScenarioTracing();
+    void execCourseRunning();
+    void execDifficultRunning();
 };
 
 #endif  // EV3_APP_RANDOMWALKER_H_

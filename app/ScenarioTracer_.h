@@ -1,7 +1,7 @@
 /******************************************************************************
- *  ScenarioTracer.h (for LEGO Mindstorms EV3)
+ *  ScenarioTracer_.h (for LEGO Mindstorms EV3)
  *  Created on: 2015/02/07
- *  Implementation of the Class ScenarioTracer
+ *  Implementation of the Class ScenarioTracer_
  *  Author: Kenya Yabe
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
@@ -13,9 +13,9 @@
 #include "SimpleTimer.h"
 #include "Scenario.h"
 
-class ScenarioTracer {
+class ScenarioTracer_ {
 public:
-    ScenarioTracer(Walker* walker,
+    ScenarioTracer_(Walker* walker,
                    Scenario* scenario,
                    SimpleTimer* timer);
 

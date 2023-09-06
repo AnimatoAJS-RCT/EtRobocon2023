@@ -1,12 +1,12 @@
 /******************************************************************************
- *  ScenarioTracer.cpp (for LEGO Mindstorms EV3)
+ *  ScenarioTracer_.cpp (for LEGO Mindstorms EV3)
  *  Created on: 2015/02/07
- *  Implementation of the Class ScenarioTracer
+ *  Implementation of the Class ScenarioTracer_
  *  Author: Kenya Yabe
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
-#include "ScenarioTracer.h"
+#include "ScenarioTracer_.h"
 
 /**
  * コンストラクタ
@@ -14,7 +14,7 @@
  * @param scenario        シナリオ
  * @param timer           タイマ
  */
-ScenarioTracer::ScenarioTracer(Walker* walker,
+ScenarioTracer_::ScenarioTracer_(Walker* walker,
                                Scenario* scenario,
                                SimpleTimer* timer)
     : mWalker(walker),
@@ -26,7 +26,7 @@ ScenarioTracer::ScenarioTracer(Walker* walker,
 /**
  * シナリオトレースする
  */
-void ScenarioTracer::run() {
+void ScenarioTracer_::run() {
     switch (mState) {
     case UNDEFINED:
         execUndefined();
@@ -45,7 +45,7 @@ void ScenarioTracer::run() {
 /**
  * シナリオトレース初期化処理
  */
-void ScenarioTracer::initAction() {
+void ScenarioTracer_::initAction() {
     mWalker->init();
 }
 
@@ -53,7 +53,7 @@ void ScenarioTracer::initAction() {
  * トレースコマンド設定
  * @param command 走行向き
  */
-void ScenarioTracer::setCommand(SceneCommands command) {
+void ScenarioTracer_::setCommand(SceneCommands command) {
     int turn = -1;
     if (command == TURN_LEFT) {
       turn = Walker::LEFT;
@@ -67,7 +67,7 @@ void ScenarioTracer::setCommand(SceneCommands command) {
 /**
  * シーン変更処理
  */
-void ScenarioTracer::modeChangeAction() {
+void ScenarioTracer_::modeChangeAction() {
     mScenario->next();
 
     SceneCommands command = mScenario->currentSceneCommand();
@@ -80,14 +80,14 @@ void ScenarioTracer::modeChangeAction() {
 /**
  * 未定義状態の処理
  */
-void ScenarioTracer::execUndefined() {
+void ScenarioTracer_::execUndefined() {
     mState = INITIAL;
 }
 
 /**
  * 初期状態の処理
  */
-void ScenarioTracer::execInitial() {
+void ScenarioTracer_::execInitial() {
     initAction();   // entry アクション(INITIAL)
 
     mState = WALKING;   // 状態遷移
@@ -98,7 +98,7 @@ void ScenarioTracer::execInitial() {
 /**
  * 走行中状態の処理
  */
-void ScenarioTracer::execWalking() {
+void ScenarioTracer_::execWalking() {
     mWalker->run();             // do アクティビティ
 
     if (mSimpleTimer->isTimedOut()) {   // イベントチェック

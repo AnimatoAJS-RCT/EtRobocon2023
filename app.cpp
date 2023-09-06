@@ -28,23 +28,11 @@ Motor       gRightWheel(PORT_B);
 Clock       gClock;
 
 // オブジェクトの定義
-static Walker          *gWalker;
 static LineMonitor     *gLineMonitor;
 static Starter         *gStarter;
 static SimpleTimer     *gScenarioTimer;
 static SimpleTimer     *gWalkerTimer;
-static LineTracer      *gLineTracer;
-static Scenario        *gScenario;
-static ScenarioTracer  *gScenarioTracer;
 static RandomWalker    *gRandomWalker;
-
-// scene object
-static Scene gScenes[] = {
-    { TURN_LEFT,   1250 * 1000, 0 },  // 左旋回1.25秒
-    { GO_STRAIGHT, 5000 * 1000, 0 },  // 直進5秒
-    { TURN_LEFT,   1250 * 1000, 0 },  // 左旋回1.25秒
-    { GO_STRAIGHT, 2500 * 1000, 0 }   // 直進2.5秒
-};
 
 /**
  * EV3システム生成
@@ -54,26 +42,13 @@ static void user_system_create() {
     tslp_tsk(2U * 1000U);
 
     // オブジェクトの作成
-    gWalker          = new Walker(gLeftWheel,
-                                  gRightWheel);
     gStarter         = new Starter(gTouchSensor);
     gLineMonitor     = new LineMonitor(gColorSensor);
     gScenarioTimer   = new SimpleTimer(gClock);
     gWalkerTimer     = new SimpleTimer(gClock);
-    gLineTracer      = new LineTracer(gLineMonitor, gWalker);
-    gScenario        = new Scenario(0);
-    gScenarioTracer  = new ScenarioTracer(gWalker,
-                                          gScenario,
-                                          gScenarioTimer);
-    gRandomWalker    = new RandomWalker(gLineTracer,
-                                        gScenarioTracer,
-                                        gStarter,
+    gRandomWalker    = new RandomWalker(gStarter,
                                         gWalkerTimer);
 
-    // シナリオを構築する
-    for (uint32_t i = 0; i < (sizeof(gScenes)/sizeof(gScenes[0])); i++) {
-        gScenario->add(&gScenes[i]);
-    }
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
 }
@@ -86,14 +61,10 @@ static void user_system_destroy() {
     gRightWheel.reset();
 
     delete gRandomWalker;
-    delete gScenarioTracer;
-    delete gScenario;
-    delete gLineTracer;
     delete gWalkerTimer;
     delete gScenarioTimer;
     delete gLineMonitor;
     delete gStarter;
-    delete gWalker;
 }
 
 /**

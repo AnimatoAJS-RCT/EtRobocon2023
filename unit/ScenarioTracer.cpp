@@ -1,21 +1,20 @@
-#include "LineTracer_.h"
+#include "ScenarioTracer.h"
 using namespace std;
 
-LineTracer_::LineTracer_(double _targetDistance, int _targetBrightness, int _pwm, bool _isLeftEdge)
+ScenarioTracer::ScenarioTracer(double _targetDistance, int _leftPwm, int _rightPwm)
   : targetDistance(_targetDistance),
-    targetBrightness(_targetBrightness),
-    pwm(_pwm),
-    isLeftEdge(_isLeftEdge)
+    leftPwm(_leftPwm),
+    rightPwm(_rightPwm)
 {
 }
 
-void LineTracer_::run()
+void ScenarioTracer::run()
 {
   double initialDistance = 0;  // 実行前の走行距離
   double currentDistance = 0;  // 現在の走行距離
 
-  // pwm値が0の場合は終了する
-  if(pwm == 0) {
+  // 両輪のpwm値が0の場合は終了する
+  if(leftPwm == 0 && rightPwm == 0) {
     return;
   }
   // 目標距離が0以下の場合は終了する
@@ -30,16 +29,6 @@ void LineTracer_::run()
   // 走行距離が目標距離に到達するまで繰り返す
   while(abs(currentDistance - initialDistance) < targetDistance) {
     currentDistance = Mileage::calculateMileage(controller.getRightCount(), controller.getLeftCount());
-
-    int rightPwm, leftPwm;
-    if(controller.getBrightness() >= targetBrightness) { // カラーセンサが白を取得した場合
-      rightPwm = isLeftEdge ? pwm - 10 : pwm;
-      leftPwm = isLeftEdge ? pwm : pwm - 10;
-    } else {
-      rightPwm = isLeftEdge ? pwm : pwm - 10;
-      leftPwm = isLeftEdge ? pwm - 10 : pwm;
-    }
-
     controller.setRightPwm(rightPwm);
     controller.setLeftPwm(leftPwm);
     // 10ミリ秒待機

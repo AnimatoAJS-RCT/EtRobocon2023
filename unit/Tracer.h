@@ -1,14 +1,14 @@
-#ifndef RUNNER_H
-#define RUNNER_H
+#ifndef TRACER_H
+#define TRACER_H
 
 #include "Controller.h"
 
-class Runner {
+class Tracer {
  public:
   /**
    * コンストラクタ
    */
-  Runner();
+  Tracer();
 
   /**
    * @brief 走行する抽象メソッド

@@ -17,7 +17,6 @@ const int RandomWalker::MAX_TIME = 15000 * 1000;   // 切り替え時間の最�
 
 /**
  * コンストラクタ
- * @param scenarioTracer  シナリオトレーサ
  * @param starter         スタータ  
  * @param simpleTimer     タイマ
  */
@@ -29,7 +28,8 @@ RandomWalker::RandomWalker(const Starter* starter,
     ev3api::Clock* clock = new ev3api::Clock();
 
     srand(clock->now());  // 乱数をリセットする
-
+    generateCourseList(); // courseListを生成する。
+    
     delete clock;
 }
 
@@ -44,11 +44,14 @@ void RandomWalker::run() {
     case WAITING_FOR_START:
         execWaitingForStart();
         break;
-    case LINE_TRACING:
+    case COURSE_RUNNING:
         execCourseRunning();
         break;
-    case SCENARIO_TRACING:
+    case DIFFICULT_RUNNING:
         execDifficultRunning();
+        break;
+    case FINISHED:
+        execFinished();
         break;
     default:
         break;
@@ -73,6 +76,12 @@ void RandomWalker::modeChangeAction() {
     mSimpleTimer->start();
 }
 
+void RandomWalker::generateCourseList() {
+    // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
+    courseList.push_back(new LineTracer(500,20,90,true));
+    courseList.push_back(new ScenarioTracer(500,90,50));
+}
+
 /**
  * 未定義状態の処理
  */
@@ -85,7 +94,7 @@ void RandomWalker::execUndefined() {
  */
 void RandomWalker::execWaitingForStart() {
     if (mStarter->isPushed()) {
-        mState = LINE_TRACING;
+        mState = COURSE_RUNNING;
 
         modeChangeAction();
     }
@@ -95,25 +104,25 @@ void RandomWalker::execWaitingForStart() {
  * ノーマルコースの走行状態の処理
  */
 void RandomWalker::execCourseRunning() {
-    LineTracer lineTracer(500,20,90,true);
-    ScenarioTracer scenarioTracer(500,50,90);
-    lineTracer.run();
-    printf("lineTracer.run()：完了\n");
-    scenarioTracer.run();
-    printf("scenarioTracer.run()：完了\n");
+    for(const auto& tracer : courseList) {
+        tracer->run();
+    }
+
+    mState = DIFFICULT_RUNNING;
 }
 
 /**
  * 難所エリア走行状態の処理
  */
 void RandomWalker::execDifficultRunning() {
-    // mScenarioTracer->run();
+    /* TODO: 
+     * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
+     * やり方はノーマルコースと同様。
+     */
 
-    // if (mSimpleTimer->isTimedOut()) {
-    //     mSimpleTimer->stop();
+    mState = FINISHED;
+}
 
-    //     mState = LINE_TRACING;
-
-    //     modeChangeAction();
-    // }
+void RandomWalker::execFinished() {
+    // 何もしないで待機する
 }

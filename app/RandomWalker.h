@@ -9,6 +9,7 @@
 #ifndef EV3_APP_RANDOMWALKER_H_
 #define EV3_APP_RANDOMWALKER_H_
 
+#include <vector>
 #include "Starter.h"
 #include "SimpleTimer.h"
 
@@ -27,8 +28,9 @@ private:
     enum State {
         UNDEFINED,
         WAITING_FOR_START,
-        LINE_TRACING,
-        SCENARIO_TRACING
+        COURSE_RUNNING,
+        DIFFICULT_RUNNING,
+        FINISHED
     };
 
     static const int MIN_TIME;
@@ -37,13 +39,16 @@ private:
     const Starter* mStarter;
     SimpleTimer* mSimpleTimer;
     State mState;
+    std::vector<Tracer*> courseList; // ノーマルコースの走行インスタンスのリスト
 
     int getRandomTime();
     void modeChangeAction();
+    void generateCourseList();
     void execUndefined();
     void execWaitingForStart();
     void execCourseRunning();
     void execDifficultRunning();
+    void execFinished();
 };
 
 #endif  // EV3_APP_RANDOMWALKER_H_

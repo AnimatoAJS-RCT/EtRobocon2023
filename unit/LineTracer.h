@@ -1,10 +1,10 @@
 #ifndef LINE_TRACER_H
 #define LINE_TRACER_H
 
-#include "Runner.h"
+#include "Tracer.h"
 #include "Mileage.h"
 
-class LineTracer : public Runner {
+class LineTracer : public Tracer {
  public:
   /**
    * コンストラクタ

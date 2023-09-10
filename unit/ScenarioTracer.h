@@ -1,10 +1,10 @@
 #ifndef SCENARIO_TRACER_H
 #define SCENARIO_TRACER_H
 
-#include "Runner.h"
+#include "Tracer.h"
 #include "Mileage.h"
 
-class ScenarioTracer : public Runner {
+class ScenarioTracer : public Tracer {
  public:
   /**
    * コンストラクタ

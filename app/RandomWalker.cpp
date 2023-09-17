@@ -17,24 +17,19 @@ const int RandomWalker::MAX_TIME = 15000 * 1000;   // 切り替え時間の最�
 
 /**
  * コンストラクタ
- * @param lineTracer      ライントレーサ
- * @param scenarioTracer  シナリオトレーサ
  * @param starter         スタータ  
  * @param simpleTimer     タイマ
  */
-RandomWalker::RandomWalker(LineTracer* lineTracer,
-                           ScenarioTracer* scenarioTracer,
-                           const Starter* starter,
+RandomWalker::RandomWalker(const Starter* starter,
                            SimpleTimer* simpleTimer)
-    : mLineTracer(lineTracer),
-      mScenarioTracer(scenarioTracer),
-      mStarter(starter),
+    : mStarter(starter),
       mSimpleTimer(simpleTimer),
       mState(UNDEFINED) {
     ev3api::Clock* clock = new ev3api::Clock();
 
     srand(clock->now());  // 乱数をリセットする
-
+    generateCourseList(); // courseListを生成する。
+    
     delete clock;
 }
 
@@ -42,7 +37,6 @@ RandomWalker::RandomWalker(LineTracer* lineTracer,
  * ランダム走行する
  */
 void RandomWalker::run() {
-    printf("テスト:%d\n",mState);
     switch (mState) {
     case UNDEFINED:
         execUndefined();
@@ -50,11 +44,14 @@ void RandomWalker::run() {
     case WAITING_FOR_START:
         execWaitingForStart();
         break;
-    case LINE_TRACING:
-        execLineTracing();
+    case COURSE_RUNNING:
+        execCourseRunning();
         break;
-    case SCENARIO_TRACING:
-        execScenarioTracing();
+    case DIFFICULT_RUNNING:
+        execDifficultRunning();
+        break;
+    case FINISHED:
+        execFinished();
         break;
     default:
         break;
@@ -79,6 +76,12 @@ void RandomWalker::modeChangeAction() {
     mSimpleTimer->start();
 }
 
+void RandomWalker::generateCourseList() {
+    // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
+    courseList.push_back(new LineTracer(500,20,90,true));
+    courseList.push_back(new ScenarioTracer(500,90,50));
+}
+
 /**
  * 未定義状態の処理
  */
@@ -91,38 +94,35 @@ void RandomWalker::execUndefined() {
  */
 void RandomWalker::execWaitingForStart() {
     if (mStarter->isPushed()) {
-        mState = LINE_TRACING;
+        mState = COURSE_RUNNING;
 
         modeChangeAction();
     }
 }
 
 /**
- * ライントレース状態の処理
+ * ノーマルコースの走行状態の処理
  */
-void RandomWalker::execLineTracing() {
-    mLineTracer->run();
-
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
-
-        mState = SCENARIO_TRACING;
-
-        modeChangeAction();
+void RandomWalker::execCourseRunning() {
+    for(const auto& tracer : courseList) {
+        tracer->run();
     }
+
+    mState = DIFFICULT_RUNNING;
 }
 
 /**
- * シナリオトレース状態の処理
+ * 難所エリア走行状態の処理
  */
-void RandomWalker::execScenarioTracing() {
-    mScenarioTracer->run();
+void RandomWalker::execDifficultRunning() {
+    /* TODO: 
+     * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
+     * やり方はノーマルコースと同様。
+     */
 
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
+    mState = FINISHED;
+}
 
-        mState = LINE_TRACING;
-
-        modeChangeAction();
-    }
+void RandomWalker::execFinished() {
+    // 何もしないで待機する
 }

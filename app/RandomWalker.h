@@ -14,6 +14,7 @@
 #include "SimpleTimer.h"
 
 #include "LineTracer.h"
+#include "LineTracer2.h"
 #include "ScenarioTracer.h"
 #include "LineMonitor.h"
 

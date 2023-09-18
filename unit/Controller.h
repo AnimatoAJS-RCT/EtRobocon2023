@@ -5,6 +5,7 @@
 #include "SonarSensor.h"
 #include "Motor.h"
 #include "Clock.h"
+#include "etroboc_ext.h"
 #include <algorithm>
 
 class Controller {
@@ -61,6 +62,11 @@ class Controller {
    * @param milliSec スリープ時間(ミリ秒)
    */
   void sleep(int milliSec = 10);
+
+  /**
+   * シミュレータに競技終了の通知をする
+   */
+  void notifyCompleted();
 
  private:
   ev3api::ColorSensor colorSensor;

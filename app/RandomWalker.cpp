@@ -78,24 +78,22 @@ void RandomWalker::modeChangeAction() {
 
 void RandomWalker::generateCourseList()
 {
-  constexpr int BRIGHTNESS_TH = 20;   // 輝度の閾値
-  constexpr bool LEFT_EDGE = true;    // 左エッジ
-  constexpr bool RIGHT_EDGE = false;  // 右エッジ
+
   // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
-  // courseList.push_back(new ScenarioTracer(200,40,40));
-  // courseList.push_back(new ScenarioTracer(150,80,78));
-  // courseList.push_back(new ScenarioTracer(2500,100,100));
-  // courseList.push_back(new ScenarioTracer(500,100,50));
-  // courseList.push_back(new LineTracer(500,20,90,true));
+  courseList.push_back(new ScenarioTracer(100, 40, 40)); // 初速が早いとブレるため少しだけ低速で走る
+  courseList.push_back(new LineTracer2(1300, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.22, 0.04, 0.04)));
+  courseList.push_back(new ScenarioTracer(1310, 100, 100));
+  courseList.push_back(new ScenarioTracer(490, 100, 60)); // 第一カーブ
+  courseList.push_back(new LineTracer2(800, BRIGHTNESS_TH, 80, RIGHT_EDGE, PidGain(0.25, 0.04, 0.04)));
+  courseList.push_back(new ScenarioTracer(800, 100, 100));
+  courseList.push_back(new ScenarioTracer(490, 100, 60)); // 第二カーブ
+//   courseList.push_back(new LineTracer2(2000, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.60, 0.15, 0.12)));// カーブ
 
-//   courseList.push_back(new LineTracer2(2000, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.20, 0.04, 0.04)));
-//   courseList.push_back(new LineTracer2(2000, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.20, 0.04, 0.04)));
-
-    Controller controller;
-    while(true) {
-      printf("Brightness:%d\n", controller.getBrightness());
-      controller.sleep(1000);
-    }
+  //   Controller controller;
+  //   while(true) {
+  //     printf("Brightness:%d\n", controller.getBrightness());
+  //     controller.sleep(1000);
+  //     }
 }
 
 /**
@@ -144,5 +142,5 @@ void RandomWalker::execDifficultRunning() {
 void RandomWalker::execFinished() {
     // シミュレータに終了を通知する
     Controller controller;
-    controller.notifyCompleted();
+    // controller.notifyCompleted();
 }

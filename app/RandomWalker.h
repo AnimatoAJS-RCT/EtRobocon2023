@@ -36,6 +36,9 @@ private:
 
     static const int MIN_TIME;
     static const int MAX_TIME;
+    static constexpr int BRIGHTNESS_TH = 30;   // 輝度の閾値(白：57、黒：3)
+    static constexpr bool LEFT_EDGE = true;    // 左エッジ
+    static constexpr bool RIGHT_EDGE = false;  // 右エッジ
 
     const Starter* mStarter;
     SimpleTimer* mSimpleTimer;

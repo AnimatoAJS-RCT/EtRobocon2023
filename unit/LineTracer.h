@@ -24,7 +24,7 @@ class LineTracer : public Tracer {
   double targetDistance;  // 目標距離 0~
   int targetBrightness;   // 目標輝度 0~
   int pwm;                // PWM値 -100~100
-  bool& isLeftEdge;       // エッジの左右判定(true:左エッジ, false:右エッジ)
+  bool isLeftEdge;       // エッジの左右判定(true:左エッジ, false:右エッジ)
 };
 
 #endif

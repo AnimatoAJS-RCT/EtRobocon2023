@@ -39,7 +39,6 @@ void LineTracer2::run()
     int rightPwm, leftPwm;
     leftPwm = max(pwm + (int)currentPid, 0);
     rightPwm = max(pwm - (int)currentPid, 0);
-
     printf("PID: %d, leftPwm: %d, rightPwm: %d\n", currentPid, leftPwm, rightPwm);
     controller.setRightPwm(rightPwm);
     controller.setLeftPwm(leftPwm);

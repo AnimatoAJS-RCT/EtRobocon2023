@@ -81,19 +81,15 @@ void RandomWalker::generateCourseList()
 
   // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
   courseList.push_back(new ScenarioTracer(100, 40, 40)); // 初速が早いとブレるため少しだけ低速で走る
-  courseList.push_back(new LineTracer2(1300, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.22, 0.04, 0.04)));
-  courseList.push_back(new ScenarioTracer(1310, 100, 100));
-  courseList.push_back(new ScenarioTracer(490, 100, 60)); // 第一カーブ
+  courseList.push_back(new LineTracer2(1300, BRIGHTNESS_TH, 90, LEFT_EDGE, PidGain(0.30, 0.12, 0.12)));
+  courseList.push_back(new ScenarioTracer(1350, 100, 100));
+  courseList.push_back(new ScenarioTracer(550, 100, 60));  // 第一カーブ
   courseList.push_back(new LineTracer2(800, BRIGHTNESS_TH, 80, RIGHT_EDGE, PidGain(0.25, 0.04, 0.04)));
-  courseList.push_back(new ScenarioTracer(800, 100, 100));
-  courseList.push_back(new ScenarioTracer(490, 100, 60)); // 第二カーブ
-//   courseList.push_back(new LineTracer2(2000, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.60, 0.15, 0.12)));// カーブ
-
-  //   Controller controller;
-  //   while(true) {
-  //     printf("Brightness:%d\n", controller.getBrightness());
-  //     controller.sleep(1000);
-  //     }
+  courseList.push_back(new ScenarioTracer(710, 100, 100));
+  courseList.push_back(new ScenarioTracer(590, 100, 60));  // 第二カーブ
+  courseList.push_back(new ScenarioTracer(300, 100, 100)); // 青線でライントレースが狂うため少しシナリオトレースする
+  courseList.push_back(new LineTracer2(800, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.24, 0.04, 0.04)));
+  courseList.push_back(new LineTracer2(300, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.22, 0.04, 0.04)));
 }
 
 /**

@@ -75,3 +75,7 @@ int Controller::limitPwmValue(const int value)
   }
   return value;
 }
+
+void Controller::notifyCompleted(){
+  ETRoboc_notifyCompletedToSimulator();
+}

@@ -76,10 +76,19 @@ void RandomWalker::modeChangeAction() {
     mSimpleTimer->start();
 }
 
-void RandomWalker::generateCourseList() {
-    // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
-    courseList.push_back(new LineTracer(500,20,90,true));
-    courseList.push_back(new ScenarioTracer(500,90,50));
+void RandomWalker::generateCourseList()
+{
+  // ノーマルコースに必要なTracerインスタンスをcourseListに追加する
+  courseList.push_back(new ScenarioTracer(100, 40, 40));   // 初速が早いとブレるため少しだけ低速で走る
+  courseList.push_back(new LineTracer2(1300, BRIGHTNESS_TH, 90, LEFT_EDGE, PidGain(0.30, 0.12, 0.12)));
+  courseList.push_back(new ScenarioTracer(1350, 100, 100));
+  courseList.push_back(new ScenarioTracer(550, 100, 60));  // 第一カーブ
+  courseList.push_back(new LineTracer2(800, BRIGHTNESS_TH, 80, RIGHT_EDGE, PidGain(0.25, 0.04, 0.04)));
+  courseList.push_back(new ScenarioTracer(710, 100, 100));
+  courseList.push_back(new ScenarioTracer(590, 100, 60));  // 第二カーブ
+  courseList.push_back(new ScenarioTracer(300, 100, 100)); // 青線でライントレースが狂うため少しシナリオトレースする
+  courseList.push_back(new LineTracer2(800, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.24, 0.04, 0.04)));
+  courseList.push_back(new LineTracer2(300, BRIGHTNESS_TH, 60, LEFT_EDGE, PidGain(0.21, 0.04, 0.04)));
 }
 
 /**
@@ -104,8 +113,12 @@ void RandomWalker::execWaitingForStart() {
  * ノーマルコースの走行状態の処理
  */
 void RandomWalker::execCourseRunning() {
+    int i = 1;
     for(const auto& tracer : courseList) {
+        // courseListのインスタンスを順に実行していく
         tracer->run();
+        // デバッグ用
+        printf("No.%d インスタンス終了\n", i++);
     }
 
     mState = DIFFICULT_RUNNING;
@@ -124,5 +137,7 @@ void RandomWalker::execDifficultRunning() {
 }
 
 void RandomWalker::execFinished() {
-    // 何もしないで待機する
+    // シミュレータに終了を通知する
+    Controller controller;
+    // controller.notifyCompleted();
 }

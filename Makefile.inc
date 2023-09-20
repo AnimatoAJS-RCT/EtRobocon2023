@@ -4,7 +4,6 @@ APPL_CXXOBJS += \
 	Controller.o \
 	Walker.o \
 	LineTracer.o \
-	LineTracer2.o \
 	Mileage.o \
 	Tracer.o \
 	Scenario.o \

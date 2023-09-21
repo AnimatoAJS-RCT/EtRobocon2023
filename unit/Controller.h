@@ -51,7 +51,7 @@ class Controller {
    * 左モータのPWM値をセット
    */
   void setLeftPwm(const int pwm);
-  
+
   /**
    * アームのモータを停止する
    */

@@ -12,13 +12,13 @@
 #include "TouchSensor.h"
 
 class Starter {
-public:
-    explicit Starter(const ev3api::TouchSensor& touchSensor);
+ public:
+  explicit Starter(const ev3api::TouchSensor& touchSensor);
 
-    bool isPushed() const;
+  bool isPushed() const;
 
-private:
-    const ev3api::TouchSensor& mTouchSensor;
+ private:
+  const ev3api::TouchSensor& mTouchSensor;
 };
 
 #endif  // EV3_UNIT_STARTER_H_

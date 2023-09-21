@@ -9,16 +9,12 @@
 #ifndef EV3_APP_SCENE_H_
 #define EV3_APP_SCENE_H_
 
-enum SceneCommands {
-    GO_STRAIGHT = 0,
-    TURN_LEFT,
-    TURN_RIGHT
-};
+enum SceneCommands { GO_STRAIGHT = 0, TURN_LEFT, TURN_RIGHT };
 
 struct Scene {
-    SceneCommands command;
-    int           time;
-    Scene*        next;
+  SceneCommands command;
+  int time;
+  Scene* next;
 };
 
 #endif  // EV3_APP_SCENE_H_

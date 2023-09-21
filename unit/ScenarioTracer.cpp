@@ -2,9 +2,7 @@
 using namespace std;
 
 ScenarioTracer::ScenarioTracer(double _targetDistance, int _leftPwm, int _rightPwm)
-  : targetDistance(_targetDistance),
-    leftPwm(_leftPwm),
-    rightPwm(_rightPwm)
+  : targetDistance(_targetDistance), leftPwm(_leftPwm), rightPwm(_rightPwm)
 {
 }
 
@@ -23,12 +21,14 @@ void ScenarioTracer::run()
   }
 
   // 初期値を格納
-  initialDistance = Mileage::calculateMileage(controller.getRightCount(), controller.getLeftCount());
+  initialDistance
+      = Mileage::calculateMileage(controller.getRightCount(), controller.getLeftCount());
   currentDistance = initialDistance;
 
   // 走行距離が目標距離に到達するまで繰り返す
   while(abs(currentDistance - initialDistance) < targetDistance) {
-    currentDistance = Mileage::calculateMileage(controller.getRightCount(), controller.getLeftCount());
+    currentDistance
+        = Mileage::calculateMileage(controller.getRightCount(), controller.getLeftCount());
     controller.setRightPwm(rightPwm);
     controller.setLeftPwm(leftPwm);
     // 10ミリ秒待機

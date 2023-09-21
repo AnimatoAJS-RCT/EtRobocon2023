@@ -13,34 +13,35 @@
  * @param clock クロック
  */
 SimpleTimer::SimpleTimer(const ev3api::Clock& clock)
-    : mClock(clock),
-      mDelayMs(0),
-      mStartTime(0),
-      mTargetTime(0) {
+  : mClock(clock), mDelayMs(0), mStartTime(0), mTargetTime(0)
+{
 }
 
 /**
  * タイマ満期時間設定
  * @param delay 満期時間[ms]
  */
-void SimpleTimer::setTime(uint32_t delay) {
-    mDelayMs = delay;
+void SimpleTimer::setTime(uint32_t delay)
+{
+  mDelayMs = delay;
 }
 
 /**
  * タイマ開始
  */
-void SimpleTimer::start() {
-    mStartTime  = mClock.now();
-    mTargetTime = mStartTime + mDelayMs;
+void SimpleTimer::start()
+{
+  mStartTime = mClock.now();
+  mTargetTime = mStartTime + mDelayMs;
 }
 
 /**
  * タイマ停止
  */
-void SimpleTimer::stop() {
-    mStartTime  = 0;
-    mTargetTime = 0;
+void SimpleTimer::stop()
+{
+  mStartTime = 0;
+  mTargetTime = 0;
 }
 
 /**
@@ -48,8 +49,9 @@ void SimpleTimer::stop() {
  * @retval true  タイマ満期した
  * @retval false タイマ満期していない
  */
-bool SimpleTimer::isTimedOut() const {
-    return (mClock.now() >= mTargetTime) ? true : false;
+bool SimpleTimer::isTimedOut() const
+{
+  return (mClock.now() >= mTargetTime) ? true : false;
 }
 
 /**
@@ -57,6 +59,7 @@ bool SimpleTimer::isTimedOut() const {
  * @retval true  タイマ開始した
  * @retval false タイマ開始していない
  */
-bool SimpleTimer::isStarted() const {
-    return (mStartTime == 0) ? false : true;
+bool SimpleTimer::isStarted() const
+{
+  return (mStartTime == 0) ? false : true;
 }

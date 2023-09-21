@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include "Clock.h"
 
+// T.Takahashi added start
+#include "ev3api.h"
+// T.Takahashi added end
+
 #include "RandomWalker.h"
 
 // 定数宣言
@@ -20,6 +24,13 @@ const int RandomWalker::MAX_TIME = 15000 * 1000;   // 切り替え時間の最�
  * @param starter         スタータ  
  * @param simpleTimer     タイマ
  */
+
+// T.Takahashi added start
+/* センサーの設定 */
+static const sensor_port_t
+    ultrasonic_sensor = EV3_PORT_2;
+// T.Takahashi added end
+
 RandomWalker::RandomWalker(const Starter* starter,
                            SimpleTimer* simpleTimer)
     : mStarter(starter),
@@ -29,7 +40,7 @@ RandomWalker::RandomWalker(const Starter* starter,
 
     srand(clock->now());  // 乱数をリセットする
     generateCourseList(); // courseListを生成する。
-    
+
     delete clock;
 }
 
@@ -132,8 +143,40 @@ void RandomWalker::execDifficultRunning() {
      * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
      * やり方はノーマルコースと同様。
      */
+/* シナリオフラグ */
+    static int sflag = 0;
 
-    mState = FINISHED;
+    if(sflag == 0){
+        printf("execDifficultRunning センサー接続\n");
+/* ループに入る前にセンサーとセンサーポートを接続する */
+        ev3_sensor_config (ultrasonic_sensor, ULTRASONIC_SENSOR);
+        sflag = 1;
+    }
+
+/* 反射光値格納用の変数 */
+    static int distance = 255;
+// 進行方向（1:前進　-1:後進）
+    int p_moveon = 1;
+// 速度 LOW 右９０度旋回カウント
+// int p_count = 170; 
+    int p_count = 175; 
+// 壁への最接近距離
+    static int wall_distance = 16;
+// バック終了する壁までの距離
+    static int back_distance = 16;
+
+//    while(distance > wall_distance){
+/* 距離を測定して表示し続ける */
+/* 反射値を測って変数に格納 */
+        distance = ev3_ultrasonic_sensor_get_distance(ultrasonic_sensor);
+/* 文字配列に読み取った値を格納する */
+        printf("DISTANCE:%d  sflag:%d \n",distance,sflag);
+
+// 前進
+        ScenarioTracer(13500, 100, 100);
+//    }
+
+//    mState = FINISHED;
 }
 
 void RandomWalker::execFinished() {

@@ -89,12 +89,12 @@ void RandomWalker::generateCourseList()
     courseList.push_back(new ScenarioTracer(550, 100, 60));  // 第一カーブ
     courseList.push_back(
         new LineTracer(800, BRIGHTNESS_TH, 80, RIGHT_EDGE, PidGain(0.25, 0.04, 0.04)));
-    courseList.push_back(new ScenarioTracer(690, 100, 100));
+    courseList.push_back(new ScenarioTracer(700, 100, 100));
     courseList.push_back(new ScenarioTracer(590, 100, 60));  // 第二カーブ
     courseList.push_back(new ScenarioTracer(
         300, 100, 100));  // 青線でライントレースが狂うため少しシナリオトレースする
     courseList.push_back(
-        new LineTracer(800, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.24, 0.04, 0.04)));
+        new LineTracer(800, BRIGHTNESS_TH, 70, LEFT_EDGE, PidGain(0.24, 0.04, 0.04)));
     courseList.push_back(
         new LineTracer(300, BRIGHTNESS_TH, 60, LEFT_EDGE, PidGain(0.21, 0.04, 0.04)));
   } else {  // Rコースの場合

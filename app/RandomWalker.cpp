@@ -9,10 +9,6 @@
 #include <stdlib.h>
 #include "Clock.h"
 
-// T.Takahashi added start
-#include "ev3api.h"
-// T.Takahashi added end
-
 #include "RandomWalker.h"
 
 // 定数宣言
@@ -24,36 +20,17 @@ const int RandomWalker::MAX_TIME = 15000 * 1000;  // 切り替え時間の最大
  * @param starter         スタータ
  * @param simpleTimer     タイマ
  */
-<<<<<<< HEAD
 
-// T.Takahashi added start
-/* センサーの設定 */
-static const sensor_port_t
-    ultrasonic_sensor = EV3_PORT_2;
-// T.Takahashi added end
-
-RandomWalker::RandomWalker(const Starter* starter,
-                           SimpleTimer* simpleTimer)
-    : mStarter(starter),
-      mSimpleTimer(simpleTimer),
-      mState(UNDEFINED) {
-    ev3api::Clock* clock = new ev3api::Clock();
-
-    srand(clock->now());  // 乱数をリセットする
-    generateCourseList(); // courseListを生成する。
-
-    delete clock;
-=======
 RandomWalker::RandomWalker(const Starter* starter, SimpleTimer* simpleTimer)
   : mStarter(starter), mSimpleTimer(simpleTimer), mState(UNDEFINED)
 {
   ev3api::Clock* clock = new ev3api::Clock();
 
-  srand(clock->now());   // 乱数をリセットする
-  generateCourseList();  // courseListを生成する。
+  srand(clock->now());     // 乱数をリセットする
+  generateCourseList();    // courseListを生成する。
+  generateCourseList_2();  // courseList2を生成する。
 
   delete clock;
->>>>>>> 77cd6f9e2395aafe61fa93eff4ff9a0c71bfe722
 }
 
 /**
@@ -142,6 +119,72 @@ void RandomWalker::generateCourseList()
   }
 }
 
+void RandomWalker::generateCourseList_2()
+{
+  // 難所コースに必要なTracerインスタンスをcourseListに追加する
+  if(IS_LEFT_COURSE) {  // ◆◆　Lコースの場合
+    courseList2.push_back(new DifficultScenarioTracer(
+        30, 1, 35, 35));  // ブロック押し１ 壁への最接近距離、１回の移動距離、左モーター、右モーター
+    courseList2.push_back(new DifficultScenarioTracer(25, 1, 25,
+                                                      25));  // ブロック押し２（低速）
+    courseList2.push_back(new DifficultScenarioTracer(16, 1, 15,
+                                                      15));  // ブロック押し３（超低速）
+
+    courseList2.push_back(new ScenarioTracer(120, -40, -40));  // ブロック配置後、後進１
+    courseList2.push_back(new ScenarioTracer(30, -20, -20));   // ブロック配置後、後進２
+
+    courseList2.push_back(new ScenarioTracer(10, 10, 0));  // ゴール方向へ 右旋回１（低速）
+    courseList2.push_back(new ScenarioTracer(112, 30, 0));  // ゴール方向へ右旋回２
+    courseList2.push_back(new ScenarioTracer(10, 10, 0));  // ゴール方向へ 右旋回３（低速）
+    courseList2.push_back(new ScenarioTracer(3, 0, 5));  // ちょい戻し
+    // **********************************************************
+    // 　↓↓↓↓↓↓　以下ショートカット部ができるまでのダミー　↓↓↓↓↓
+    // *
+    courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
+    //    courseList2.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
+    courseList2.push_back(new ScenarioTracer(1800, 100, 100));  // ゴール方向へ直進（高速）
+    courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
+
+    courseList2.push_back(
+        new ScenarioTracer(138, 0, 35));  // ゴール方向に旋回　右モーターのみ距離 動かし左 90度旋回
+    //    courseList.push_back(new LineTracer(1000, BRIGHTNESS_TH, 40, LEFT_EDGE,
+    //                                        PidGain(0.21, 0.04, 0.04)));  // ゴールへ入る
+    courseList2.push_back(new ScenarioTracer(490, 40, 40));  // ゴールへ入る
+    // *
+    // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
+    // **********************************************************
+  } else {  // ◆◆　Rコースの場合
+    courseList2.push_back(new DifficultScenarioTracer(
+        30, 1, 35, 35));  // ブロック押し１ 壁への最接近距離、１回の移動距離、左モーター、右モーター
+    courseList2.push_back(new DifficultScenarioTracer(25, 1, 25,
+                                                      25));  // ブロック押し２（低速）
+    courseList2.push_back(new DifficultScenarioTracer(16, 1, 25,
+                                                      15));  // ブロック押し３（低速）
+
+    courseList2.push_back(new ScenarioTracer(120, -40, -40));  // ブロック配置後、後進１
+    courseList2.push_back(new ScenarioTracer(30, -20, -20));   // ブロック配置後、後進２
+
+    courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回１（低速）
+    courseList2.push_back(new ScenarioTracer(112, 0, 30));  // ゴール方向へ右旋回２
+    courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回３（低速）
+    courseList2.push_back(new ScenarioTracer(3, 5, 0));  // ちょい戻し
+    // **********************************************************
+    // 　↓↓↓↓↓↓　以下ショートカット部ができるまでのダミー　↓↓↓↓↓
+    // *
+    courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
+    courseList2.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
+    courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
+    courseList2.push_back(
+        new ScenarioTracer(133, 40, 00));  // ゴール方向に旋回　左モーターのみ距離 動かし右 90度旋回
+    courseList2.push_back(new ScenarioTracer(490, 40, 40));  // ゴールへ入る
+    // *
+    // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
+    // **********************************************************
+  }
+}
+
 /**
  * 未定義状態の処理
  */
@@ -181,45 +224,21 @@ void RandomWalker::execCourseRunning()
 /**
  * 難所エリア走行状態の処理
  */
-void RandomWalker::execDifficultRunning() {
-    /* TODO: 
-     * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
-     * やり方はノーマルコースと同様。
-     */
-/* シナリオフラグ */
-    static int sflag = 0;
+void RandomWalker::execDifficultRunning()
+{
+  /* TODO:
+   * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
+   * やり方はノーマルコースと同様。
+   */
+  int i = 1;
+  for(const auto& tracer : courseList2) {
+    // courseListのインスタンスを順に実行していく
+    tracer->run();
+    // デバッグ用
+    //      printf("DifficultRunning No.%d インスタンス終了\n", i++);
+  }
 
-    if(sflag == 0){
-        printf("execDifficultRunning センサー接続\n");
-/* ループに入る前にセンサーとセンサーポートを接続する */
-        ev3_sensor_config (ultrasonic_sensor, ULTRASONIC_SENSOR);
-        sflag = 1;
-    }
-
-/* 反射光値格納用の変数 */
-    static int distance = 255;
-// 進行方向（1:前進　-1:後進）
-    int p_moveon = 1;
-// 速度 LOW 右９０度旋回カウント
-// int p_count = 170; 
-    int p_count = 175; 
-// 壁への最接近距離
-    static int wall_distance = 16;
-// バック終了する壁までの距離
-    static int back_distance = 16;
-
-//    while(distance > wall_distance){
-/* 距離を測定して表示し続ける */
-/* 反射値を測って変数に格納 */
-        distance = ev3_ultrasonic_sensor_get_distance(ultrasonic_sensor);
-/* 文字配列に読み取った値を格納する */
-        printf("DISTANCE:%d  sflag:%d \n",distance,sflag);
-
-// 前進
-        ScenarioTracer(13500, 100, 100);
-//    }
-
-//    mState = FINISHED;
+  mState = FINISHED;
 }
 
 void RandomWalker::execFinished()

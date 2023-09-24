@@ -12,6 +12,7 @@ APPL_CXXOBJS += \
 	LineMonitor.o \
 	Starter.o \
 	Pid.o \
+	DifficultScenarioTracer.o \
 	SimpleTimer.o
 
 SRCLANG := c++

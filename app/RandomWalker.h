@@ -15,6 +15,7 @@
 #include "LineTracer.h"
 #include "ScenarioTracer.h"
 #include "LineMonitor.h"
+#include "DifficultScenarioTracer.h"
 
 /**
  * Lコース/Rコース向けの設定を定義
@@ -45,6 +46,7 @@ class RandomWalker {
   SimpleTimer* mSimpleTimer;
   State mState;
   std::vector<Tracer*> courseList;  // ノーマルコースの走行インスタンスのリスト
+  std::vector<Tracer*> courseList2;  // 難所コースの走行インスタンスのリスト　Added T.Takahashi
 
   int getRandomTime();
   void modeChangeAction();
@@ -54,6 +56,9 @@ class RandomWalker {
   void execCourseRunning();
   void execDifficultRunning();
   void execFinished();
+
+  void generateCourseList_2();  // Added T.Takahashi
+//  void DifficultScenarioTracer();  // Added T.Takahashi
 };
 
 #endif  // EV3_APP_RANDOMWALKER_H_

@@ -80,3 +80,8 @@ void Controller::notifyCompleted()
 {
   ETRoboc_notifyCompletedToSimulator();
 }
+
+// added T.Takahashi
+int Controller::getSSDistance(){
+  return sonarSensor.getDistance();
+}

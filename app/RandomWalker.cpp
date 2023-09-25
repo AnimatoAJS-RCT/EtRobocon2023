@@ -101,7 +101,7 @@ void RandomWalker::generateCourseList()
         new LineTracer(300, BRIGHTNESS_TH, 60, LEFT_EDGE, PidGain(0.21, 0.04, 0.04)));
   } else {  // Rコースの場合
     courseList.push_back(
-        new ScenarioTracer(100, 40, 40));  // 初速が早いとブレるため少しだけ低速で走る
+        new ScenarioTracer(100, 40, 40));  // 初速が早いとブレるため少しだけ低速で走るq
     courseList.push_back(
         new LineTracer(1300, BRIGHTNESS_TH, 90, RIGHT_EDGE, PidGain(0.30, 0.12, 0.12)));
     courseList.push_back(new ScenarioTracer(1350, 100, 100));
@@ -131,7 +131,7 @@ void RandomWalker::generateCourseList_2()
                                                       15));  // ブロック押し３（超低速）
 
     courseList2.push_back(new ScenarioTracer(120, -40, -40));  // ブロック配置後、後進１
-    courseList2.push_back(new ScenarioTracer(30, -20, -20));   // ブロック配置後、後進２
+    courseList2.push_back(new ScenarioTracer(40, -20, -20));   // ブロック配置後、後進２
 
     courseList2.push_back(new ScenarioTracer(10, 10, 0));  // ゴール方向へ 右旋回１（低速）
     courseList2.push_back(new ScenarioTracer(112, 30, 0));  // ゴール方向へ右旋回２
@@ -147,10 +147,10 @@ void RandomWalker::generateCourseList_2()
     courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
 
     courseList2.push_back(
-        new ScenarioTracer(138, 0, 35));  // ゴール方向に旋回　右モーターのみ距離 動かし左 90度旋回
-    //    courseList.push_back(new LineTracer(1000, BRIGHTNESS_TH, 40, LEFT_EDGE,
-    //                                        PidGain(0.21, 0.04, 0.04)));  // ゴールへ入る
-    courseList2.push_back(new ScenarioTracer(490, 40, 40));  // ゴールへ入る
+        new ScenarioTracer(138, 0, 30));  // ゴール方向に旋回　右モーターのみ距離 動かし左 90度旋回
+    courseList2.push_back(new LineTracer(1000, BRIGHTNESS_TH, 40, LEFT_EDGE,
+                                            PidGain(0.30, 0.12, 0.12)));  // ゴールへ入る
+//    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
     // *
     // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
     // **********************************************************
@@ -159,14 +159,14 @@ void RandomWalker::generateCourseList_2()
         30, 1, 35, 35));  // ブロック押し１ 壁への最接近距離、１回の移動距離、左モーター、右モーター
     courseList2.push_back(new DifficultScenarioTracer(25, 1, 25,
                                                       25));  // ブロック押し２（低速）
-    courseList2.push_back(new DifficultScenarioTracer(16, 1, 25,
+    courseList2.push_back(new DifficultScenarioTracer(16, 1, 15,
                                                       15));  // ブロック押し３（低速）
 
-    courseList2.push_back(new ScenarioTracer(120, -40, -40));  // ブロック配置後、後進１
-    courseList2.push_back(new ScenarioTracer(30, -20, -20));   // ブロック配置後、後進２
+    courseList2.push_back(new ScenarioTracer(112, -40, -40));  // ブロック配置後、後進１
+    courseList2.push_back(new ScenarioTracer(40, -20, -20));   // ブロック配置後、後進２
 
     courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回１（低速）
-    courseList2.push_back(new ScenarioTracer(112, 0, 30));  // ゴール方向へ右旋回２
+    courseList2.push_back(new ScenarioTracer(125, 0, 30));  // ゴール方向へ右旋回２
     courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回３（低速）
     courseList2.push_back(new ScenarioTracer(3, 5, 0));  // ちょい戻し
     // **********************************************************
@@ -174,11 +174,11 @@ void RandomWalker::generateCourseList_2()
     // *
     courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
     courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
-    courseList2.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
+    courseList2.push_back(new ScenarioTracer(1850, 100, 100));  // ゴール方向へ直進（高速）
     courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
     courseList2.push_back(
-        new ScenarioTracer(133, 40, 00));  // ゴール方向に旋回　左モーターのみ距離 動かし右 90度旋回
-    courseList2.push_back(new ScenarioTracer(490, 40, 40));  // ゴールへ入る
+        new ScenarioTracer(133, 30, 00));  // ゴール方向に旋回　左モーターのみ距離 動かし右 90度旋回
+    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
     // *
     // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
     // **********************************************************

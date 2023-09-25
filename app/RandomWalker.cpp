@@ -29,6 +29,7 @@ RandomWalker::RandomWalker(const Starter* starter, SimpleTimer* simpleTimer)
   srand(clock->now());     // 乱数をリセットする
   generateCourseList();    // courseListを生成する。
   generateCourseList_2();  // courseList2を生成する。
+  generateCourseList_3();  // courseList3を生成する。
 
   delete clock;
 }
@@ -50,6 +51,9 @@ void RandomWalker::run()
       break;
     case DIFFICULT_RUNNING:
       execDifficultRunning();
+      break;
+    case SHORTCUT_RUNNING:
+      execShortcutRunning();
       break;
     case FINISHED:
       execFinished();
@@ -105,7 +109,8 @@ void RandomWalker::generateCourseList()
     courseList.push_back(
         new LineTracer(1300, BRIGHTNESS_TH, 90, RIGHT_EDGE, PidGain(0.30, 0.12, 0.12)));
     courseList.push_back(new ScenarioTracer(1350, 100, 100));
-    courseList.push_back(new ScenarioTracer(550, 60, 100));  // 第一カーブ
+    courseList.push_back(new ScenarioTracer(600, 100, 100));
+    courseList.push_back(new ScenarioTracer(557, 60, 100));  // 第一カーブ
     courseList.push_back(
         new LineTracer(800, BRIGHTNESS_TH, 80, LEFT_EDGE, PidGain(0.25, 0.04, 0.04)));
     courseList.push_back(new ScenarioTracer(680, 100, 100));
@@ -134,12 +139,13 @@ void RandomWalker::generateCourseList_2()
     courseList2.push_back(new ScenarioTracer(40, -20, -20));   // ブロック配置後、後進２
 
     courseList2.push_back(new ScenarioTracer(10, 10, 0));  // ゴール方向へ 右旋回１（低速）
-    courseList2.push_back(new ScenarioTracer(112, 30, 0));  // ゴール方向へ右旋回２
+    courseList2.push_back(new ScenarioTracer(120, 30, 0));  // ゴール方向へ右旋回２
     courseList2.push_back(new ScenarioTracer(10, 10, 0));  // ゴール方向へ 右旋回３（低速）
-    courseList2.push_back(new ScenarioTracer(3, 0, 5));  // ちょい戻し
+    //    courseList2.push_back(new ScenarioTracer(3, 0, 5));  // ちょい戻し
     // **********************************************************
     // 　↓↓↓↓↓↓　以下ショートカット部ができるまでのダミー　↓↓↓↓↓
     // *
+    /*
     courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
     courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
     //    courseList2.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
@@ -148,9 +154,9 @@ void RandomWalker::generateCourseList_2()
 
     courseList2.push_back(
         new ScenarioTracer(138, 0, 30));  // ゴール方向に旋回　右モーターのみ距離 動かし左 90度旋回
-    courseList2.push_back(new LineTracer(1000, BRIGHTNESS_TH, 40, LEFT_EDGE,
-                                            PidGain(0.30, 0.12, 0.12)));  // ゴールへ入る
-//    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
+    courseList2.push_back(new LineTracer(1000, BRIGHTNESS_TH, 25, LEFT_EDGE,
+                                         PidGain(0.30, 0.12, 0.12)));  // ゴールへ入る */
+    //    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
     // *
     // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
     // **********************************************************
@@ -168,20 +174,54 @@ void RandomWalker::generateCourseList_2()
     courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回１（低速）
     courseList2.push_back(new ScenarioTracer(125, 0, 30));  // ゴール方向へ右旋回２
     courseList2.push_back(new ScenarioTracer(10, 0, 10));  // ゴール方向へ 右旋回３（低速）
-    courseList2.push_back(new ScenarioTracer(3, 5, 0));  // ちょい戻し
+    //    courseList2.push_back(new ScenarioTracer(3, 5, 0));  // ちょい戻し
     // **********************************************************
     // 　↓↓↓↓↓↓　以下ショートカット部ができるまでのダミー　↓↓↓↓↓
     // *
-    courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
-    courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
-    courseList2.push_back(new ScenarioTracer(1850, 100, 100));  // ゴール方向へ直進（高速）
-    courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
-    courseList2.push_back(
-        new ScenarioTracer(133, 30, 00));  // ゴール方向に旋回　左モーターのみ距離 動かし右 90度旋回
-    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
+    /*    courseList2.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
+        courseList2.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
+        courseList2.push_back(new ScenarioTracer(1800, 100, 100));  // ゴール方向へ直進（高速）
+        courseList2.push_back(new ScenarioTracer(100, 40, 40));  // ゴール方向へ直進（低速）
+        courseList2.push_back(
+            new ScenarioTracer(138, 30, 0));  // ゴール方向に旋回　左モーターのみ距離 動かし右
+       90度旋回 courseList2.push_back(new LineTracer(1000, BRIGHTNESS_TH, 25, RIGHT_EDGE,
+                                             PidGain(0.30, 0.12, 0.12)));  // ゴールへ入る */
+    //    courseList2.push_back(new ScenarioTracer(480, 40, 40));  // ゴールへ入る
     // *
     // 　↑↑↑↑↑　以下ショートカット部ができるまでのダミー　↑↑↑↑↑
     // **********************************************************
+  }
+}
+
+void RandomWalker::generateCourseList_3()
+{
+  // ショートカットコースに必要なTracerインスタンスをcourseList3に追加する
+  if(IS_LEFT_COURSE) {  // ◆◆　Lコースの場合
+    // **********************************************************
+    courseList3.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList3.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
+    courseList3.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
+    courseList3.push_back(new ScenarioTracerWithLineCnt(500, 40, 40));  // ゴール方向へ直進（低速）
+    courseList3.push_back(
+        new ScenarioTracer(150, 0, 30));  // ゴール方向に旋回　右モーターのみ距離 動かし左 90度旋回
+    courseList3.push_back(new ScenarioTracer(100, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList3.push_back(
+        new LineTracer(1000, BRIGHTNESS_TH, 30, RIGHT_EDGE, PidGain(0.24, 0.04, 0.04)));
+
+    //    courseList3.push_back(new ScenarioTracer(490, 40, 40)); // ゴールへ入る
+    // **********************************************************
+  } else {                                                  // ◆◆　Rコースの場合
+    courseList3.push_back(new ScenarioTracer(50, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList3.push_back(new ScenarioTracer(50, 40, 40));  // ゴール方向へ直進（低速）
+    courseList3.push_back(new ScenarioTracer(1900, 100, 100));  // ゴール方向へ直進（高速）
+    courseList3.push_back(new ScenarioTracerWithLineCnt(500, 40, 40));  // ゴール方向へ直進（低速）
+    courseList3.push_back(
+        new ScenarioTracer(150, 30, 0));  // ゴール方向に旋回　左モーターのみ距離 動かし右 90度旋回
+    courseList3.push_back(new ScenarioTracer(100, 20, 20));  // ゴール方向へ直進（超低速）
+    courseList3.push_back(
+        new LineTracer(1000, BRIGHTNESS_TH, 30, LEFT_EDGE, PidGain(0.24, 0.04, 0.04)));
+
+    //    courseList3.push_back(new ScenarioTracer(490, 40, 40)); // ゴールへ入る
   }
 }
 
@@ -236,6 +276,26 @@ void RandomWalker::execDifficultRunning()
     tracer->run();
     // デバッグ用
     //      printf("DifficultRunning No.%d インスタンス終了\n", i++);
+  }
+
+  mState = SHORTCUT_RUNNING;
+}
+
+/**
+ * ショートカット部走行状態の処理
+ */
+void RandomWalker::execShortcutRunning()
+{
+  /* TODO:
+   * 難所エリア攻略に必要な走行インスタンスのリストを作ってそれのrun()を実行する。
+   * やり方はノーマルコースと同様。
+   */
+  int i = 1;
+  for(const auto& tracer : courseList3) {
+    // courseListのインスタンスを順に実行していく
+    tracer->run();
+    // デバッグ用
+    printf("ShortCutRunning No.%d インスタンス終了\n", i++);
   }
 
   mState = FINISHED;

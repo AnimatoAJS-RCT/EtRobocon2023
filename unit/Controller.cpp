@@ -28,6 +28,14 @@ rgb_raw_t Controller::getRawColor()
   return rgb;
 }
 
+// 色を取得
+/*int Controller::getColorNumber()
+{
+  int color;
+  color = colorSensor.getColorNumber;
+  return color;
+}*/
+
 // 左モータ角位置取得
 int Controller::getLeftCount()
 {
@@ -82,6 +90,7 @@ void Controller::notifyCompleted()
 }
 
 // added T.Takahashi
-int Controller::getSSDistance(){
+int Controller::getSSDistance()
+{
   return sonarSensor.getDistance();
 }

@@ -8,6 +8,7 @@ APPL_CXXOBJS += \
 	Tracer.o \
 	Scenario.o \
 	ScenarioTracer.o \
+	ScenarioTracerWithLineCnt.o \
 	RandomWalker.o \
 	LineMonitor.o \
 	Starter.o \

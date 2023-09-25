@@ -28,6 +28,14 @@ rgb_raw_t Controller::getRawColor()
   return rgb;
 }
 
+// 色を取得
+/*int Controller::getColorNumber()
+{
+  int color;
+  color = colorSensor.getColorNumber;
+  return color;
+}*/
+
 // 左モータ角位置取得
 int Controller::getLeftCount()
 {
@@ -79,4 +87,10 @@ int Controller::limitPwmValue(const int value)
 void Controller::notifyCompleted()
 {
   ETRoboc_notifyCompletedToSimulator();
+}
+
+// added T.Takahashi
+int Controller::getSSDistance()
+{
+  return sonarSensor.getDistance();
 }

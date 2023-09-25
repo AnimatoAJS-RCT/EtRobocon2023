@@ -14,7 +14,9 @@
 #include "SimpleTimer.h"
 #include "LineTracer.h"
 #include "ScenarioTracer.h"
+#include "ScenarioTracerWithLineCnt.h"
 #include "LineMonitor.h"
+#include "DifficultScenarioTracer.h"
 
 /**
  * Lコース/Rコース向けの設定を定義
@@ -33,7 +35,14 @@ class RandomWalker {
   void run();
 
  private:
-  enum State { UNDEFINED, WAITING_FOR_START, COURSE_RUNNING, DIFFICULT_RUNNING, FINISHED };
+  enum State {
+    UNDEFINED,
+    WAITING_FOR_START,
+    COURSE_RUNNING,
+    DIFFICULT_RUNNING,
+    SHORTCUT_RUNNING,
+    FINISHED
+  };
 
   static const int MIN_TIME;
   static const int MAX_TIME;
@@ -45,6 +54,9 @@ class RandomWalker {
   SimpleTimer* mSimpleTimer;
   State mState;
   std::vector<Tracer*> courseList;  // ノーマルコースの走行インスタンスのリスト
+  std::vector<Tracer*> courseList2;  // 難所コースの走行インスタンスのリスト　Added T.Takahashi
+  std::vector<Tracer*>
+      courseList3;  // ショートカット部コースの走行インスタンスのリスト　Added M.iioka
 
   int getRandomTime();
   void modeChangeAction();
@@ -53,7 +65,11 @@ class RandomWalker {
   void execWaitingForStart();
   void execCourseRunning();
   void execDifficultRunning();
+  void execShortcutRunning();
   void execFinished();
+  void generateCourseList_2();  // Added T.Takahashi
+  void generateCourseList_3();  // Added M.Iioka
+  //  void DifficultScenarioTracer();  // Added T.Takahashi
 };
 
 #endif  // EV3_APP_RANDOMWALKER_H_

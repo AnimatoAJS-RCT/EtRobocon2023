@@ -68,6 +68,9 @@ class Controller {
    */
   void notifyCompleted();
 
+// added T.Takahashi
+  int getSSDistance();
+  
  private:
   ev3api::ColorSensor colorSensor;
   ev3api::SonarSensor sonarSensor;

@@ -8,10 +8,12 @@ APPL_CXXOBJS += \
 	Tracer.o \
 	Scenario.o \
 	ScenarioTracer.o \
+	ScenarioTracerWithLineCnt.o \
 	RandomWalker.o \
 	LineMonitor.o \
 	Starter.o \
 	Pid.o \
+	DifficultScenarioTracer.o \
 	SimpleTimer.o
 
 SRCLANG := c++
